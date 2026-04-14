@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barangay HQ | Admin Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="flex h-screen overflow-hidden">
+
+    <aside class="w-64 bg-white border-r border-slate-200 flex flex-col">
+        <div class="p-6 flex items-center gap-3">
+            <div class="logo-box"><i data-lucide="shield-check"></i></div>
+            <span class="font-bold text-xl tracking-tight text-slate-800">Barangay HQ</span>
+        </div>
+        
+        <nav class="flex-1 px-4 space-y-2 mt-4">
+            <a href="#" onclick="switchView('dashboard')" id="nav-dashboard" class="sidebar-link active">
+                <i data-lucide="layout-dashboard"></i> Dashboard
+            </a>
+            <a href="#" onclick="switchView('records')" id="nav-records" class="sidebar-link">
+                <i data-lucide="users"></i> Resident Records
+            </a>
+        </nav>
+
+        <div class="p-4 border-t border-slate-100">
+            <div class="flex items-center gap-3 px-2">
+                <div class="avatar blue">AD</div>
+                <div>
+                    <p class="text-sm font-semibold text-slate-800">Admin User</p>
+                    <p class="text-xs text-slate-500">Secretary</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col overflow-y-auto bg-[#F8FAFC]">
+        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 sticky top-0 z-10 shadow-sm">
+            <div class="relative w-96">
+                <i data-lucide="search" class="search-icon"></i>
+                <input type="text" id="globalSearch" placeholder="Search residents..." class="search-input">
+            </div>
+            <div class="flex items-center gap-4">
+                <button class="icon-btn relative">
+                    <i data-lucide="bell"></i>
+                    <span class="notification-dot"></span>
+                </button>
+                <div class="divider"></div>
+                <button class="icon-btn"><i data-lucide="settings"></i></button>
+            </div>
+        </header>
+
+        <section id="view-dashboard" class="p-8">
+            <div class="mb-8">
+                <h1 class="page-title">Community Overview</h1>
+                <p class="page-subtitle">Real-time data for Barangay Management</p>
+            </div>
+
+            <div class="grid grid-cols-12 gap-6 mb-8">
+                <div class="col-span-4 card p-6 border-l-4 border-blue-600">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="icon-box blue"><i data-lucide="users"></i></div>
+                        <div class="text-right">
+                            <span class="text-xs font-bold text-green-600 bg-green-50 px-2 py-1 rounded">+12% growth</span>
+                        </div>
+                    </div>
+                    <p class="stat-label">Total Registered Residents</p>
+                    <h3 class="stat-value text-4xl mt-1" id="dash-total-residents">0</h3>
+                </div>
+                <div class="col-span-8 card p-6 bg-slate-50 border border-dashed border-slate-300 flex items-center justify-center">
+                    <div class="text-center">
+                        <p class="text-slate-500 font-medium">System Status: Operational</p>
+                        <p class="text-xs text-slate-400 mt-1">Census database was last backed up 2 hours ago.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-10 gap-6">
+                <div class="col-span-7 card p-6">
+                    <h4 class="font-bold text-slate-800 mb-6">Population Growth (Monthly)</h4>
+                    <div class="chart-area">
+                        <div class="bar-chart h-[40%]"></div>
+                        <div class="bar-chart h-[45%]"></div>
+                        <div class="bar-chart h-[55%]"></div>
+                        <div class="bar-chart h-[50%]"></div>
+                        <div class="bar-chart h-[65%]"></div>
+                        <div class="bar-chart h-[80%]"></div>
+                        <div class="bar-chart h-[90%] bg-blue-700"></div>
+                    </div>
+                </div>
+                <div class="col-span-3 card p-6">
+                    <h4 class="font-bold text-slate-800 mb-6">Demographics</h4>
+                    <div class="donut-container">
+                        <svg class="donut-svg">
+                            <circle cx="80" cy="80" r="70" stroke="#E2E8F0" stroke-width="20" fill="transparent" />
+                            <circle cx="80" cy="80" r="70" stroke="#1E40AF" stroke-width="20" stroke-dasharray="220 440" fill="transparent" />
+                        </svg>
+                        <div class="donut-text">
+                            <span class="perc">52%</span>
+                            <span class="label">Female</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="view-records" class="p-8 hidden">
+            <div class="flex justify-between items-end mb-8">
+                <div>
+                    <h1 class="page-title">Resident Records</h1>
+                    <p class="page-subtitle" id="record-count-subtitle">0 active members</p>
+                </div>
+                <button onclick="openModal()" class="btn-primary">
+                    <i data-lucide="plus" class="w-5 h-5"></i> Add New Resident
+                </button>
+            </div>
+
+            <div class="card overflow-hidden">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Full Name</th>
+                            <th>Gender</th>
+                            <th>Birth Date</th>
+                            <th>Status</th>
+                            <th>Contact</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resident-table-body">
+                        </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <div id="modal-overlay" class="fixed inset-0 bg-slate-900/50 hidden z-50 flex items-center justify-center backdrop-blur-sm p-4">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg overflow-hidden">
+            <div class="bg-blue-800 p-6 text-white">
+                <h2 class="text-xl font-bold">Register New Resident</h2>
+                <p class="text-blue-200 text-xs">Fill out all fields to update the census.</p>
+            </div>
+            <form id="resident-form" class="p-8 space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="col-span-2">
+                        <label class="filter-label">Full Name</label>
+                        <input type="text" id="form-name" required class="filter-input w-full" placeholder="">
+                    </div>
+                    <div>
+                        <label class="filter-label">Gender</label>
+                        <select id="form-gender" class="filter-input w-full">
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="filter-label">Birth Date</label>
+                        <input type="date" id="form-dob" required class="filter-input w-full">
+                    </div>
+                    <div>
+                        <label class="filter-label">Civil Status</label>
+                        <select id="form-status" class="filter-input w-full">
+                            <option value="Single">Single</option>
+                            <option value="Married">Married</option>
+                            <option value="Widowed">Widowed</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="filter-label">Contact Number</label>
+                        <input type="text" id="form-contact" required class="filter-input w-full" placeholder="09XX-XXX-XXXX">
+                    </div>
+                </div>
+                <div class="flex justify-end gap-3 pt-6">
+                    <button type="button" onclick="closeModal()" class="px-6 py-2 text-slate-500 font-semibold">Cancel</button>
+                    <button type="submit" class="btn-primary">Save Resident</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
